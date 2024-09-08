@@ -7,6 +7,7 @@ public class Moving : MonoBehaviour
 {
     [SerializeField] float playerSpeed;
 
+
     Dictionary<KeyCode, Vector2> keyToVector = new Dictionary<KeyCode, Vector2>() {
         { KeyCode.W, Vector2.up},
         { KeyCode.S, Vector2.down },
@@ -15,12 +16,16 @@ public class Moving : MonoBehaviour
     };
 
     Vector2 direction;
+
+    // Components
     SpriteRenderer playerSpriteRenderer;
+    Animator animator;
 
     // Start is called before the first frame update
     void Start()
     {
         playerSpriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -28,6 +33,7 @@ public class Moving : MonoBehaviour
     {
         Move();
         Rotate();
+        HandleAnimation();
     }
 
     void Move()
@@ -49,13 +55,19 @@ public class Moving : MonoBehaviour
         // skip if paused, todo -> make better!
         // if (Time.timeScale == 0f) return;
 
-        if (direction.x == 0) {
+        if (direction.x == 0)
+        {
             return;
         }
         if (playerSpriteRenderer.flipX != Mathf.Sign(direction.x) < 0)
         {
             playerSpriteRenderer.flipX = !playerSpriteRenderer.flipX;
         }
+    }
+
+    void HandleAnimation()
+    {
+        animator.SetBool("isRunning", direction.sqrMagnitude != 0);
     }
 
 }

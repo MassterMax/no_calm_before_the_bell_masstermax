@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 657f88da8a89b6c43b297a7af78c1665
+guid: 74fd054a39a33f34b8a6a2af9505b2e6
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -110,7 +110,49 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: man-idle_0
+      name: man-run_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e39adef81b788cf44b71b13482354dd0
+      internalID: 1724608187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: man-run_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b63503b0e5f5c874a8501b203986cf1c
+      internalID: 1874092952
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: man-run_2
       rect:
         serializedVersion: 2
         x: 0
@@ -124,14 +166,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6b4bcd071baa9734f86755a11a92259d
-      internalID: -1441527427
+      spriteID: 58702425d65c31e4f96d45e1bc3e2c40
+      internalID: 2015557900
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: man-idle_1
+      name: man-run_3
       rect:
         serializedVersion: 2
         x: 32
@@ -145,8 +187,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e7f1cb5311279b74e9f9c9f61067324d
-      internalID: -1951178352
+      spriteID: 6ac408d179a131b44a034af7f8f82e59
+      internalID: -771809662
       vertices: []
       indices: 
       edges: []
@@ -162,8 +204,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      man-idle_0: -1441527427
-      man-idle_1: -1951178352
+      man-run_0: 1724608187
+      man-run_1: 1874092952
+      man-run_2: 2015557900
+      man-run_3: -771809662
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
