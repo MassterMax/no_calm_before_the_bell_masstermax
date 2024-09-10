@@ -223,6 +223,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 24224079737008926, guid: 30f2acc1780cc784b80ba40b8fe14cc4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7565326201769602282, guid: 30f2acc1780cc784b80ba40b8fe14cc4, type: 3}
       propertyPath: m_Name
       value: man
@@ -272,9 +276,71 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 30f2acc1780cc784b80ba40b8fe14cc4, type: 3}
+--- !u!1001 &7043363327061609796
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 313818420190800530, guid: 51c75e8676f818f43988569d768e7e56, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 313818420190800530, guid: 51c75e8676f818f43988569d768e7e56, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 313818420190800530, guid: 51c75e8676f818f43988569d768e7e56, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 313818420190800530, guid: 51c75e8676f818f43988569d768e7e56, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 313818420190800530, guid: 51c75e8676f818f43988569d768e7e56, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 313818420190800530, guid: 51c75e8676f818f43988569d768e7e56, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 313818420190800530, guid: 51c75e8676f818f43988569d768e7e56, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 313818420190800530, guid: 51c75e8676f818f43988569d768e7e56, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 313818420190800530, guid: 51c75e8676f818f43988569d768e7e56, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 313818420190800530, guid: 51c75e8676f818f43988569d768e7e56, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2464562536135074879, guid: 51c75e8676f818f43988569d768e7e56, type: 3}
+      propertyPath: m_Name
+      value: puddle_spawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 9108599549585050665, guid: 51c75e8676f818f43988569d768e7e56, type: 3}
+      propertyPath: puddlePrefab
+      value: 
+      objectReference: {fileID: 6259409051499384872, guid: cb92db021a6f96148a041fdb47bd00ae, type: 3}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 51c75e8676f818f43988569d768e7e56, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 5451144571665302448}
+  - {fileID: 7043363327061609796}

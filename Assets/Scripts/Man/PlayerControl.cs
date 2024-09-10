@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Moving : MonoBehaviour
+public class PlayerControl : MonoBehaviour
 {
     [SerializeField] float playerSpeed;
 
@@ -16,16 +16,25 @@ public class Moving : MonoBehaviour
     };
 
     Vector2 direction;
+    bool isWashing = false;
 
     // Components
     SpriteRenderer playerSpriteRenderer;
     Animator animator;
+
+    PuddleSpawner puddleSpawner;
+
+    GameObject broom;
 
     // Start is called before the first frame update
     void Start()
     {
         playerSpriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        puddleSpawner = FindObjectOfType<PuddleSpawner>();
+        puddleSpawner.SetPlayer(this);
+        broom = transform.GetChild(0).gameObject;
+        broom.SetActive(false);
     }
 
     // Update is called once per frame
@@ -33,16 +42,20 @@ public class Moving : MonoBehaviour
     {
         Move();
         Rotate();
-        HandleAnimation();
+        HandleRunningAnimation();
+        HandlePuddleWashing();
     }
 
     void Move()
     {
+        if (isWashing) return;
+
         direction = Vector2.zero;
 
         foreach (var pair in keyToVector)
-            if (Input.GetKey(pair.Key))
+            if (Input.GetKey(pair.Key)) {
                 direction += pair.Value;
+            }
 
         direction = direction.normalized;
 
@@ -65,9 +78,31 @@ public class Moving : MonoBehaviour
         }
     }
 
-    void HandleAnimation()
+    void HandleRunningAnimation()
     {
         animator.SetBool("isRunning", direction.sqrMagnitude != 0);
+    }
+
+    void HandlePuddleWashing()
+    {
+        if (isWashing) return;
+
+        if (puddleSpawner.NearPuddle()) {
+            broom.SetActive(true);
+            if (Input.GetKeyDown(KeyCode.Space) && puddleSpawner.TryToWashPuddle()) {
+                broom.SetActive(false);
+                isWashing = true;
+                animator.SetBool("isWashing", isWashing);
+            }
+        } else {
+            broom.SetActive(false);
+        }
+    }
+
+    public void StopWashing() 
+    {
+        isWashing = false;
+        animator.SetBool("isWashing", isWashing);
     }
 
 }
