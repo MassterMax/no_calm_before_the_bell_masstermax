@@ -15,6 +15,8 @@ public class PuddleSpawner : MonoBehaviour
 
     float radius = 4f;
 
+    float nearRadius = 0.66f;
+
     
     PlayerControl player;
     public void SetPlayer(PlayerControl player) {
@@ -42,7 +44,7 @@ public class PuddleSpawner : MonoBehaviour
     public bool NearPuddle() {
         for (int i = 0; i < puddleList.Count; ++i) {
             GameObject puddle = puddleList[i];
-            if ((player.transform.position - puddle.transform.position).sqrMagnitude < 0.5f * 0.5f) {
+            if ((player.transform.position - puddle.transform.position).sqrMagnitude < nearRadius * nearRadius) {
                 return true;
             }
         }
@@ -52,7 +54,7 @@ public class PuddleSpawner : MonoBehaviour
     public bool TryToWashPuddle() {
         for (int i = 0; i < puddleList.Count; ++i) {
             GameObject puddle = puddleList[i];
-            if ((player.transform.position - puddle.transform.position).sqrMagnitude < 0.5f * 0.5f) {
+            if ((player.transform.position - puddle.transform.position).sqrMagnitude < nearRadius * nearRadius) {
                 currentPuddleIndex = i;
                 IEnumerator  coroutine = StartWashing();
                 StartCoroutine(coroutine);
