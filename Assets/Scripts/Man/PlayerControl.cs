@@ -19,6 +19,7 @@ public class PlayerControl : MonoBehaviour
 
     Vector2 direction;
     bool isWashing = false;
+    Rigidbody2D rb;
 
     // Components
     SpriteRenderer playerSpriteRenderer;
@@ -31,16 +32,17 @@ public class PlayerControl : MonoBehaviour
     SpriteRenderer trashBagSpriteRenderer;
     int trashCount = 0;
 
-    float trashBagScale = 1.1f;
-    float playerSpeedScale = 0.85f;
+    float trashBagScale = 1.2f;
+    float playerSpeedScale = 0.66f;
 
     Dictionary<Vector3, Collider2D> collidedJunk = new Dictionary<Vector3, Collider2D>();
 
-    [SerializeField] GameObject trashCan; // move to ok solution
+    bool nearTrashCan = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
         playerSpriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         puddleSpawner = FindObjectOfType<PuddleSpawner>();
@@ -64,6 +66,10 @@ public class PlayerControl : MonoBehaviour
     }
 
     // Update is called once per frame
+
+    // void FixedUpdate() {
+    //     ChangeVelocity();
+    // }
     void Update()
     {
         Move();
@@ -75,20 +81,30 @@ public class PlayerControl : MonoBehaviour
 
     void Move()
     {
-        if (isWashing) return;
-
         direction = Vector2.zero;
 
-        foreach (var pair in keyToVector)
-            if (Input.GetKey(pair.Key))
+        if (isWashing) { }
+        else
+        {
+            foreach (var pair in keyToVector)
             {
-                direction += pair.Value;
+                if (Input.GetKey(pair.Key))
+                {
+                    direction += pair.Value;
+                }
             }
+        }
 
         direction = direction.normalized;
 
+        // transform.Translate(direction * Time.deltaTime * playerSpeed);
 
-        transform.Translate(direction * Time.deltaTime * playerSpeed);
+        rb.velocity = (Vector3)direction * playerSpeed;
+    }
+
+    void ChangeVelocity()
+    {
+        rb.velocity = (Vector3)direction * playerSpeed;
     }
 
     void Rotate()
@@ -143,6 +159,7 @@ public class PlayerControl : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider)
     {
+        Debug.Log("Enter " + collider.gameObject.tag);
         if (collider.gameObject.tag == "junk")
         {
             if (collidedJunk.ContainsKey(collider.transform.position))
@@ -151,13 +168,22 @@ public class PlayerControl : MonoBehaviour
             }
             collidedJunk.Add(collider.transform.position, collider);
         }
+        else if (collider.gameObject.tag == "trash-can")
+        {
+            nearTrashCan = true;
+        }
     }
 
     void OnTriggerExit2D(Collider2D collider)
     {
+        Debug.Log("Exit " + collider.gameObject.tag);
         if (collider.gameObject.tag == "junk")
         {
             collidedJunk.Remove(collider.transform.position);
+        }
+        else if (collider.gameObject.tag == "trash-can")
+        {
+            nearTrashCan = false;
         }
     }
 
@@ -186,7 +212,7 @@ public class PlayerControl : MonoBehaviour
                 Destroy(junk);
                 IncreaseTrashCount();
             }
-            else if ((trashCan.transform.position - transform.position).sqrMagnitude < 0.5 * 0.5)
+            else if (nearTrashCan)
             {
                 Debug.Log("inside HandleJunk: try to drop junk to can");
                 ClearTrashCount();

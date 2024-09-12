@@ -11,9 +11,9 @@ public class PuddleSpawner : MonoBehaviour
 
     int currentPuddleIndex = 0;
 
-    float washingSpeed = 1.5f;
+    float washingSpeed = 2.5f;
 
-    float radius = 4f;
+    float radius = 3f;
 
     float nearRadius = 0.66f;
 

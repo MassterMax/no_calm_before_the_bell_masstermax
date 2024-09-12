@@ -6,6 +6,7 @@ TagManager:
   tags:
   - junk
   - trash-can
+  - player
   layers:
   - Default
   - TransparentFX
