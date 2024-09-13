@@ -29,11 +29,14 @@ public class PlayerControl : MonoBehaviour
 
     GameObject broom;
     GameObject trashBag;
+    GameObject sweat;
     SpriteRenderer trashBagSpriteRenderer;
     int trashCount = 0;
 
     float trashBagScale = 1.2f;
-    float playerSpeedScale = 0.66f;
+    float playerSpeedScale = 0.75f;
+
+    float playerSlowNearPuddle = 0.5f;
 
     Dictionary<Vector3, Collider2D> collidedJunk = new Dictionary<Vector3, Collider2D>();
 
@@ -60,16 +63,16 @@ public class PlayerControl : MonoBehaviour
                 trashBag = child.gameObject;
                 trashBagSpriteRenderer = trashBag.GetComponent<SpriteRenderer>();
             }
+            else if (child.name == "sweat")
+            {
+                sweat = child.gameObject;
+            }
         }
 
+        sweat.SetActive(false);
         ClearTrashCount();
     }
 
-    // Update is called once per frame
-
-    // void FixedUpdate() {
-    //     ChangeVelocity();
-    // }
     void Update()
     {
         Move();
@@ -94,24 +97,19 @@ public class PlayerControl : MonoBehaviour
                 }
             }
         }
-
         direction = direction.normalized;
 
-        // transform.Translate(direction * Time.deltaTime * playerSpeed);
-
-        rb.velocity = (Vector3)direction * playerSpeed;
-    }
-
-    void ChangeVelocity()
-    {
-        rb.velocity = (Vector3)direction * playerSpeed;
+        if (puddleSpawner.NearPuddle())
+        {
+            rb.velocity = (Vector3)direction * playerSpeed * playerSlowNearPuddle;
+        }
+        else {
+            rb.velocity = (Vector3)direction * playerSpeed;
+        }
     }
 
     void Rotate()
     {
-        // skip if paused, todo -> make better!
-        // if (Time.timeScale == 0f) return;
-
         if (direction.x == 0)
         {
             return;
@@ -136,6 +134,7 @@ public class PlayerControl : MonoBehaviour
         if (puddleSpawner.NearPuddle())
         {
             broom.SetActive(true);
+            sweat.SetActive(true);
             if (Input.GetKeyDown(KeyCode.Space) && puddleSpawner.TryToWashPuddle())
             {
                 broom.SetActive(false);
@@ -145,6 +144,7 @@ public class PlayerControl : MonoBehaviour
         }
         else
         {
+            sweat.SetActive(false);
             broom.SetActive(false);
         }
     }
