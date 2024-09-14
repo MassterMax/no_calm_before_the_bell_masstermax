@@ -68,6 +68,10 @@ public class PuddleSpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(washingSpeed);
         GameObject currentPuddle = puddleList[currentPuddleIndex];
+        if (player.GetBetweenWaves()) {
+            // abort
+            yield break;
+        }
         puddleList.RemoveAt(currentPuddleIndex);
         Destroy(currentPuddle);
         player.StopWashing();

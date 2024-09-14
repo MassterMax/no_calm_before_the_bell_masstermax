@@ -42,6 +42,22 @@ public class PlayerControl : MonoBehaviour
 
     bool nearTrashCan = false;
 
+    bool betweenWaves = false;
+
+    public void SetBetweenWaves(bool value) {
+        betweenWaves = value;
+        if (value) {
+            playerSpeed = PLAYER_SPEED;
+        }
+        else {
+            playerSpeed = PLAYER_SPEED * Mathf.Pow(playerSpeedScale, trashCount);
+        }
+    }
+
+    public bool GetBetweenWaves() {
+        return betweenWaves;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -87,6 +103,9 @@ public class PlayerControl : MonoBehaviour
         direction = Vector2.zero;
 
         if (isWashing) { }
+        else if (betweenWaves) {
+            direction = -transform.position;
+        }
         else
         {
             foreach (var pair in keyToVector)
@@ -99,12 +118,16 @@ public class PlayerControl : MonoBehaviour
         }
         direction = direction.normalized;
 
-        if (puddleSpawner.NearPuddle())
+        if (puddleSpawner.NearPuddle() && !betweenWaves)
         {
             rb.velocity = (Vector3)direction * playerSpeed * playerSlowNearPuddle;
         }
         else {
             rb.velocity = (Vector3)direction * playerSpeed;
+        }
+        
+        if (betweenWaves && transform.position.sqrMagnitude < 0.01) {
+            transform.position = Vector2.zero;
         }
     }
 
@@ -129,7 +152,15 @@ public class PlayerControl : MonoBehaviour
 
     void HandlePuddleWashing()
     {
-        if (isWashing) return;
+        if (betweenWaves) {
+            broom.SetActive(false);
+            sweat.SetActive(false);
+            StopWashing();
+            return;
+        }
+        if (isWashing) {
+            return;
+        }
 
         if (puddleSpawner.NearPuddle())
         {
@@ -189,7 +220,7 @@ public class PlayerControl : MonoBehaviour
 
     void HandleJunk()
     {
-        if (isWashing) return;
+        if (isWashing || betweenWaves) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (collidedJunk.Count > 0)
