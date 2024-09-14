@@ -49,7 +49,7 @@ public class Kid : MonoBehaviour
     void Update()
     {
         if (transform.position.x > 10) {
-            Destroy(gameObject);
+            Destroy(gameObject);  // destroy kid
         }
     }
 }

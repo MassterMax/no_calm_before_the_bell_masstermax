@@ -26,6 +26,7 @@ public class PlayerControl : MonoBehaviour
     Animator animator;
 
     PuddleSpawner puddleSpawner;
+    JunkSpawner junkSpawner;
 
     GameObject broom;
     GameObject trashBag;
@@ -38,23 +39,28 @@ public class PlayerControl : MonoBehaviour
 
     float playerSlowNearPuddle = 0.5f;
 
-    Dictionary<Vector3, Collider2D> collidedJunk = new Dictionary<Vector3, Collider2D>();
+    // Dictionary<GameObject, Collider2D> collidedJunk = new Dictionary<GameObject, Collider2D>();
+    HashSet<GameObject> collidedJunkSet = new HashSet<GameObject>();
 
     bool nearTrashCan = false;
 
     bool betweenWaves = false;
 
-    public void SetBetweenWaves(bool value) {
+    public void SetBetweenWaves(bool value)
+    {
         betweenWaves = value;
-        if (value) {
+        if (value)
+        {
             playerSpeed = PLAYER_SPEED;
         }
-        else {
+        else
+        {
             playerSpeed = PLAYER_SPEED * Mathf.Pow(playerSpeedScale, trashCount);
         }
     }
 
-    public bool GetBetweenWaves() {
+    public bool GetBetweenWaves()
+    {
         return betweenWaves;
     }
 
@@ -69,6 +75,7 @@ public class PlayerControl : MonoBehaviour
         animator = GetComponent<Animator>();
         puddleSpawner = FindObjectOfType<PuddleSpawner>();
         puddleSpawner.SetPlayer(this);
+        junkSpawner = FindObjectOfType<JunkSpawner>();
 
         foreach (Transform child in GetComponentInChildren<Transform>())
         {
@@ -107,7 +114,8 @@ public class PlayerControl : MonoBehaviour
         direction = Vector2.zero;
 
         if (isWashing) { }
-        else if (betweenWaves) {
+        else if (betweenWaves)
+        {
             direction = -transform.position;
         }
         else
@@ -126,11 +134,13 @@ public class PlayerControl : MonoBehaviour
         {
             rb.velocity = (Vector3)direction * playerSpeed * playerSlowNearPuddle;
         }
-        else {
+        else
+        {
             rb.velocity = (Vector3)direction * playerSpeed;
         }
-        
-        if (betweenWaves && transform.position.sqrMagnitude < 0.01) {
+
+        if (betweenWaves && transform.position.sqrMagnitude < 0.01)
+        {
             transform.position = Vector2.zero;
         }
     }
@@ -156,13 +166,15 @@ public class PlayerControl : MonoBehaviour
 
     void HandlePuddleWashing()
     {
-        if (betweenWaves) {
+        if (betweenWaves)
+        {
             broom.SetActive(false);
             sweat.SetActive(false);
             StopWashing();
             return;
         }
-        if (isWashing) {
+        if (isWashing)
+        {
             return;
         }
 
@@ -197,11 +209,12 @@ public class PlayerControl : MonoBehaviour
         Debug.Log("Enter " + collider.gameObject.tag);
         if (collider.gameObject.tag == "junk")
         {
-            if (collidedJunk.ContainsKey(collider.transform.position))
-            {
-                throw new System.Exception();
-            }
-            collidedJunk.Add(collider.transform.position, collider);
+            // if (collidedJunk.ContainsKey(collider.transform.position))
+            // {
+            //     throw new System.Exception();
+            // }
+            // collidedJunk.Add(collider.transform.position, collider);
+            collidedJunkSet.Add(collider.gameObject);
         }
         else if (collider.gameObject.tag == "trash-can")
         {
@@ -214,7 +227,8 @@ public class PlayerControl : MonoBehaviour
         Debug.Log("Exit " + collider.gameObject.tag);
         if (collider.gameObject.tag == "junk")
         {
-            collidedJunk.Remove(collider.transform.position);
+            // collidedJunk.Remove(collider.transform.position);
+            collidedJunkSet.Remove(collider.gameObject);
         }
         else if (collider.gameObject.tag == "trash-can")
         {
@@ -222,29 +236,59 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
+    // void HandleJunk()
+    // {
+    //     if (isWashing || betweenWaves) return;
+    //     if (Input.GetKeyDown(KeyCode.Space))
+    //     {
+    //         if (collidedJunk.Count > 0)
+    //         {
+    //             Debug.Log("inside HandleJunk: try to destory first junk");
+    //             float distance = -1;
+    //             Vector3 preferedJunk = Vector3.zero;
+
+    //             foreach (GameObject pos in collidedJunk.Keys)
+    //             {
+    //                 if (distance == -1 || distance > (pos - transform.position).sqrMagnitude)
+    //                 {
+    //                     distance = (pos - transform.position).sqrMagnitude;
+    //                     preferedJunk = pos;
+    //                 }
+    //             }
+
+    //             GameObject junk = collidedJunk[preferedJunk].gameObject;
+    //             collidedJunk.Remove(preferedJunk);
+    //             junkSpawner.RemoveJunk(junk);
+    //             IncreaseTrashCount();
+    //         }
+    //         else if (nearTrashCan && trashCount > 0)
+    //         {
+    //             Debug.Log("inside HandleJunk: try to drop junk to can");
+    //             ClearTrashCount();
+    //         }
+    //     }
+    // }
     void HandleJunk()
     {
         if (isWashing || betweenWaves) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (collidedJunk.Count > 0)
+            if (collidedJunkSet.Count > 0)
             {
                 Debug.Log("inside HandleJunk: try to destory first junk");
                 float distance = -1;
-                Vector3 preferedJunk = Vector3.zero;
+                GameObject preferedJunk = null;
 
-                foreach (Vector3 pos in collidedJunk.Keys)
+                foreach (GameObject collidedJunk in collidedJunkSet)
                 {
-                    if (distance == -1 || distance > (pos - transform.position).sqrMagnitude)
+                    if (distance == -1 || distance > (collidedJunk.transform.position - transform.position).sqrMagnitude)
                     {
-                        distance = (pos - transform.position).sqrMagnitude;
-                        preferedJunk = pos;
+                        distance = (collidedJunk.transform.position - transform.position).sqrMagnitude;
+                        preferedJunk = collidedJunk;
                     }
                 }
-
-                GameObject junk = collidedJunk[preferedJunk].gameObject;
-                collidedJunk.Remove(preferedJunk);
-                Destroy(junk);
+                collidedJunkSet.Remove(preferedJunk);
+                junkSpawner.RemoveJunk(preferedJunk);
                 IncreaseTrashCount();
             }
             else if (nearTrashCan && trashCount > 0)

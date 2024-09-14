@@ -9,8 +9,6 @@ public class PuddleSpawner : MonoBehaviour
 
     List<GameObject> puddleList = new List<GameObject>();
 
-    int currentPuddleIndex = 0;
-
     float washingSpeed = 2.5f;
 
     float radius = 3f;
@@ -56,8 +54,7 @@ public class PuddleSpawner : MonoBehaviour
         for (int i = 0; i < puddleList.Count; ++i) {
             GameObject puddle = puddleList[i];
             if ((player.transform.position - puddle.transform.position).sqrMagnitude < nearRadius * nearRadius) {
-                currentPuddleIndex = i;
-                IEnumerator  coroutine = StartWashing();
+                IEnumerator  coroutine = StartWashing(i);
                 StartCoroutine(coroutine);
                 return true;
             }
@@ -65,18 +62,21 @@ public class PuddleSpawner : MonoBehaviour
         return false;
     }
 
-    IEnumerator StartWashing()
+    IEnumerator StartWashing(int puddleIndex)
     {
         yield return new WaitForSeconds(washingSpeed);
-        GameObject currentPuddle = puddleList[currentPuddleIndex];
         if (player.GetBetweenWaves()) {
             // abort
             yield break;
         }
-        puddleList.RemoveAt(currentPuddleIndex);
-        Destroy(currentPuddle);
+        RemovePuddle(puddleIndex);
         player.StopWashing();
     }
 
+    void RemovePuddle(int index) {
+        GameObject currentPuddle = puddleList[index];
+        puddleList.RemoveAt(index);
+        Destroy(currentPuddle);
+    }
 
 }

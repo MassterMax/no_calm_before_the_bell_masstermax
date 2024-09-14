@@ -716,7 +716,7 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 652f7165b7c30ab46af6c4aad90a639b, type: 2}
     m_FontSize: 50
     m_FontStyle: 0
-    m_BestFit: 1
+    m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 120
     m_Alignment: 4
@@ -1171,7 +1171,7 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 652f7165b7c30ab46af6c4aad90a639b, type: 2}
     m_FontSize: 50
     m_FontStyle: 0
-    m_BestFit: 1
+    m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 120
     m_Alignment: 4
@@ -5782,6 +5782,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 640d03d74df7fcb499cfc6bbe68bd0a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  warningPrefab: {fileID: 0}
   pauseScreen: {fileID: 803173413}
   gameOverScreen: {fileID: 227197587}
   moneyText: {fileID: 2070796687}
@@ -6401,7 +6402,7 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 652f7165b7c30ab46af6c4aad90a639b, type: 2}
     m_FontSize: 50
     m_FontStyle: 0
-    m_BestFit: 1
+    m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 120
     m_Alignment: 5
