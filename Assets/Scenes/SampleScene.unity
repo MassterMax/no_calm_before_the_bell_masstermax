@@ -1569,7 +1569,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &803173414
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5784,6 +5784,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseScreen: {fileID: 803173413}
   gameOverScreen: {fileID: 227197587}
+  moneyText: {fileID: 2070796687}
 --- !u!1 &2062704440
 GameObject:
   m_ObjectHideFlags: 0

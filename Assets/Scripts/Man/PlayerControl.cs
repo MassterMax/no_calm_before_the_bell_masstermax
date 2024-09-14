@@ -58,9 +58,12 @@ public class PlayerControl : MonoBehaviour
         return betweenWaves;
     }
 
+    GameController gameController;
+
     // Start is called before the first frame update
     void Start()
     {
+        gameController = FindObjectOfType<GameController>();
         rb = GetComponent<Rigidbody2D>();
         playerSpriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
@@ -244,7 +247,7 @@ public class PlayerControl : MonoBehaviour
                 Destroy(junk);
                 IncreaseTrashCount();
             }
-            else if (nearTrashCan)
+            else if (nearTrashCan && trashCount > 0)
             {
                 Debug.Log("inside HandleJunk: try to drop junk to can");
                 ClearTrashCount();
@@ -262,6 +265,7 @@ public class PlayerControl : MonoBehaviour
 
     void ClearTrashCount()
     {
+        gameController.RewardForJunk(trashCount);
         trashCount = 0;
         trashBag.transform.localScale = Vector3.one;
         playerSpeed = PLAYER_SPEED;
