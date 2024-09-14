@@ -5,7 +5,6 @@ using UnityEngine;
 public class JunkSpawner : MonoBehaviour
 {
     [SerializeField] GameObject junkPrefab;
-    float radius = 3f;
 
     HashSet<GameObject> junkSet = new HashSet<GameObject>();
 
@@ -24,7 +23,9 @@ public class JunkSpawner : MonoBehaviour
 
     public void SpawnJunk()
     {
-        GameObject junk = Instantiate(junkPrefab, UnityEngine.Random.insideUnitCircle * radius, Quaternion.identity);
+        // -8 ... 8, -2 ... 2
+        Vector2 pos = Vector2.right * Random.Range(-8f, 8f) + Vector2.up * Random.Range(-3.5f, 2f);
+        GameObject junk = Instantiate(junkPrefab, pos, Quaternion.identity);
         int i = 0;
         int activated = UnityEngine.Random.Range(0, 3);
         foreach (Transform child in junk.GetComponentInChildren<Transform>())

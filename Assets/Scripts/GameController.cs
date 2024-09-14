@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -91,11 +92,12 @@ public class GameController : MonoBehaviour
 
     IEnumerator IterateAllItems(float timeToClear)
     {
-        int totalItemCount = junkSpawner.GetJunkSet().Count;
+        int totalItemCount = junkSpawner.GetJunkSet().Count + puddleSpawner.GetPuddleList().Count;
         if (totalItemCount == 0) {
             yield break;
         }
         float delay = (timeToClear / (float)totalItemCount) * 0.4f;
+        delay = Math.Min(delay, 0.5f);
 
         // spawn warnings
         foreach (GameObject junk in junkSpawner.GetJunkSet()) {
@@ -103,9 +105,15 @@ public class GameController : MonoBehaviour
             SpawnWarning(junk.transform.position + Vector3.up * 0.5f);
             yield return new WaitForSeconds(delay);
         }
+        foreach (GameObject puddle in puddleSpawner.GetPuddleList()) {
+            // junkSpawner.RemoveJunk(junk);
+            SpawnWarning(puddle.transform.position + Vector3.up * 0.5f);
+            yield return new WaitForSeconds(delay);
+        }
 
         // remove items
         junkSpawner.ClearAllJunk();
+        puddleSpawner.ClearAllPuddles();
 
         // remove warnings
         foreach (GameObject warning in warnings) {

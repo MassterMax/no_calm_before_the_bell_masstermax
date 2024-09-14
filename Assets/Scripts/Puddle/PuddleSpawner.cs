@@ -11,13 +11,13 @@ public class PuddleSpawner : MonoBehaviour
 
     float washingSpeed = 2.5f;
 
-    float radius = 3f;
 
     float nearRadius = 0.66f;
 
-    
+
     PlayerControl player;
-    public void SetPlayer(PlayerControl player) {
+    public void SetPlayer(PlayerControl player)
+    {
         this.player = player;
     }
 
@@ -29,32 +29,41 @@ public class PuddleSpawner : MonoBehaviour
     void Update()
     {
         // todo remove
-        if (Input.GetKeyDown(KeyCode.L)) {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
             SpawnPuddle();
         }
     }
 
-    public void SpawnPuddle() {
-        GameObject newPuddle = Instantiate(puddlePrefab, UnityEngine.Random.insideUnitCircle * radius, Quaternion.identity);
+    public void SpawnPuddle()
+    {
+        Vector2 pos = Vector2.right * UnityEngine.Random.Range(-8f, 8f) + Vector2.up * UnityEngine.Random.Range(-3.5f, 2f);
+        GameObject newPuddle = Instantiate(puddlePrefab, pos, Quaternion.identity);
         puddleList.Add(newPuddle);
     }
 
 
-    public bool NearPuddle() {
-        for (int i = 0; i < puddleList.Count; ++i) {
+    public bool NearPuddle()
+    {
+        for (int i = 0; i < puddleList.Count; ++i)
+        {
             GameObject puddle = puddleList[i];
-            if ((player.transform.position - puddle.transform.position).sqrMagnitude < nearRadius * nearRadius) {
+            if ((player.transform.position - puddle.transform.position).sqrMagnitude < nearRadius * nearRadius)
+            {
                 return true;
             }
         }
         return false;
     }
 
-    public bool TryToWashPuddle() {
-        for (int i = 0; i < puddleList.Count; ++i) {
+    public bool TryToWashPuddle()
+    {
+        for (int i = 0; i < puddleList.Count; ++i)
+        {
             GameObject puddle = puddleList[i];
-            if ((player.transform.position - puddle.transform.position).sqrMagnitude < nearRadius * nearRadius) {
-                IEnumerator  coroutine = StartWashing(i);
+            if ((player.transform.position - puddle.transform.position).sqrMagnitude < nearRadius * nearRadius)
+            {
+                IEnumerator coroutine = StartWashing(i);
                 StartCoroutine(coroutine);
                 return true;
             }
@@ -65,7 +74,8 @@ public class PuddleSpawner : MonoBehaviour
     IEnumerator StartWashing(int puddleIndex)
     {
         yield return new WaitForSeconds(washingSpeed);
-        if (player.GetBetweenWaves()) {
+        if (player.GetBetweenWaves())
+        {
             // abort
             yield break;
         }
@@ -73,9 +83,24 @@ public class PuddleSpawner : MonoBehaviour
         player.StopWashing();
     }
 
-    void RemovePuddle(int index) {
+    void RemovePuddle(int index)
+    {
         GameObject currentPuddle = puddleList[index];
         puddleList.RemoveAt(index);
         Destroy(currentPuddle);
+    }
+
+    public List<GameObject> GetPuddleList()
+    {
+        return puddleList;
+    }
+
+    public void ClearAllPuddles()
+    {
+        foreach (GameObject puddle in puddleList)
+        {
+            Destroy(puddle);
+        }
+        puddleList.Clear();
     }
 }
