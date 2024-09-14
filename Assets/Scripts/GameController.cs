@@ -6,8 +6,12 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    const int JUNK_REWARD = 5;
+    const int JUNK_REWARD = 1;
+    const int JUNK_PENALTY = -3;
+    const int PUDDLE_PENALTY = -3;
+    const int CHILD_ITEM_PENALTY = -10;
 
+    [SerializeField] GameObject warningPrefab;
     [SerializeField] GameObject pauseScreen;
     [SerializeField] GameObject gameOverScreen;
     [SerializeField] Text moneyText;
@@ -24,13 +28,16 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameOver) {
-            if (Input.GetKeyDown(KeyCode.R)) {
+        if (gameOver)
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
                 SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
             }
             return;
         }
-        if (Input.GetKeyDown(KeyCode.P)) {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
             Pause();
         }
         // if (Input.GetKeyDown(KeyCode.O)) {
@@ -39,29 +46,40 @@ public class GameController : MonoBehaviour
         // }
     }
 
-    void Pause() {
+    void Pause()
+    {
         paused = !paused;
         Time.timeScale = paused ? 0 : 1;
         pauseScreen.SetActive(paused);
     }
 
-    void GameOver() {
+    void GameOver()
+    {
         gameOverScreen.SetActive(true);
         gameOver = true;
         Time.timeScale = 0;
     }
 
-    public void RewardForJunk(int count) {
+    public void RewardForJunk(int count)
+    {
         ChangeMoney(count * JUNK_REWARD);
     }
 
-    void ChangeMoney(int value) {
+    void ChangeMoney(int value)
+    {
         moneyBalance += value;
         moneyText.text = moneyBalance.ToString();
 
-        if (moneyBalance < 0) {
+        if (moneyBalance < 0)
+        {
             moneyText.color = Color.red;
             GameOver();
         }
+    }
+
+    void SpawnWarning(Vector3 pos)
+    {
+        GameObject warning = Instantiate(warningPrefab, pos, Quaternion.identity);
+        Destroy(warning, 2f);
     }
 }
