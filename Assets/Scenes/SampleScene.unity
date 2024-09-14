@@ -5782,7 +5782,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 640d03d74df7fcb499cfc6bbe68bd0a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  warningPrefab: {fileID: 0}
+  warningPrefab: {fileID: 1312666369574752297, guid: ad82d646bebfd02429ec6dbdebd0784e, type: 3}
   pauseScreen: {fileID: 803173413}
   gameOverScreen: {fileID: 227197587}
   moneyText: {fileID: 2070796687}

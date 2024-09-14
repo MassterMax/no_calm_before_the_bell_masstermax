@@ -78,5 +78,4 @@ public class PuddleSpawner : MonoBehaviour
         puddleList.RemoveAt(index);
         Destroy(currentPuddle);
     }
-
 }

@@ -18,12 +18,19 @@ public class GameController : MonoBehaviour
     int moneyBalance = 0;
     bool paused = false;
     bool gameOver = false;
+    PuddleSpawner puddleSpawner;
+    JunkSpawner junkSpawner;
+
+    List<GameObject> warnings = new List<GameObject>();
+
     void Start()
     {
         pauseScreen.SetActive(false);
         gameOverScreen.SetActive(false);
         Time.timeScale = 1;
         ChangeMoney(0);
+        puddleSpawner = FindObjectOfType<PuddleSpawner>();
+        junkSpawner = FindObjectOfType<JunkSpawner>();
     }
     // Update is called once per frame
     void Update()
@@ -77,9 +84,40 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public void ClearAllItems(float timeToClear) {
+        IEnumerator coroutine = IterateAllItems(timeToClear);
+        StartCoroutine(coroutine);
+    }
+
+    IEnumerator IterateAllItems(float timeToClear)
+    {
+        int totalItemCount = junkSpawner.GetJunkSet().Count;
+        if (totalItemCount == 0) {
+            yield break;
+        }
+        float delay = (timeToClear / (float)totalItemCount) * 0.4f;
+
+        // spawn warnings
+        foreach (GameObject junk in junkSpawner.GetJunkSet()) {
+            // junkSpawner.RemoveJunk(junk);
+            SpawnWarning(junk.transform.position + Vector3.up * 0.5f);
+            yield return new WaitForSeconds(delay);
+        }
+
+        // remove items
+        junkSpawner.ClearAllJunk();
+
+        // remove warnings
+        foreach (GameObject warning in warnings) {
+            Destroy(warning);
+        }
+        warnings.Clear();
+    }
+
+
     void SpawnWarning(Vector3 pos)
     {
         GameObject warning = Instantiate(warningPrefab, pos, Quaternion.identity);
-        Destroy(warning, 2f);
+        warnings.Add(warning);
     }
 }

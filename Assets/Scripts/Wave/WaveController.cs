@@ -5,16 +5,20 @@ using UnityEngine.UI;
 
 public class WaveController : MonoBehaviour
 {
+    const int BATCH_CNT = 10;
+    const int KIDS_IN_BATCH_CNT = 20;
+    const float BETWEEN_KIDS_DELAY = 0.5f;
+    const float AFTER_WAVE_DELAY = 5f;
+
     int currentWave = 0;
     float waveDuration = 15f;
-    float afterWaveDelay= 5f;
     float currentWaveDuration = 0;
     [SerializeField] Slider waveBar;
     [SerializeField] GameObject clock;
     [SerializeField] GameObject bell;
     KidSpawner kidSpawner;
     Image fill;
-
+    GameController gameController;
     PlayerControl playerControl; 
     void Start()
     {
@@ -22,6 +26,7 @@ public class WaveController : MonoBehaviour
         kidSpawner = FindObjectOfType<KidSpawner>();
         playerControl = FindObjectOfType<PlayerControl>();
         fill = waveBar.fillRect.gameObject.GetComponent<Image>();
+        gameController = FindObjectOfType<GameController>();
     }
 
     // Update is called once per frame
@@ -53,8 +58,9 @@ public class WaveController : MonoBehaviour
             playerControl.SetBetweenWaves(true);
             bell.SetActive(true);
             clock.SetActive(false);
-            IEnumerator enumerator = SpawnKids(0.5f, 5, 10);
+            IEnumerator enumerator = SpawnKids(BETWEEN_KIDS_DELAY, BATCH_CNT, KIDS_IN_BATCH_CNT);
             StartCoroutine(enumerator);
+            gameController.ClearAllItems(AFTER_WAVE_DELAY + BETWEEN_KIDS_DELAY * BATCH_CNT);
         }
         // todo after some time reset bar
         waveBar.value = currentWaveDuration / waveDuration;
@@ -79,7 +85,7 @@ public class WaveController : MonoBehaviour
             yield return new WaitForSeconds(delayTime);
 
         }
-        yield return new WaitForSeconds(afterWaveDelay);
+        yield return new WaitForSeconds(AFTER_WAVE_DELAY);
         playerControl.SetBetweenWaves(false);
         StartNewWave();
     }

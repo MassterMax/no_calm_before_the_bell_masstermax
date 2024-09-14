@@ -40,4 +40,16 @@ public class JunkSpawner : MonoBehaviour
         junkSet.Remove(junk);
         Destroy(junk);
     }
+
+    public HashSet<GameObject> GetJunkSet()
+    {
+        return junkSet;
+    }
+
+    public void ClearAllJunk() {
+        foreach (GameObject junk in junkSet) {
+            Destroy(junk);
+        }
+        junkSet.Clear();
+    }
 }
