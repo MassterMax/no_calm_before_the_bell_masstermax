@@ -91,6 +91,7 @@ public class PlayerControl : MonoBehaviour
 
     void Update()
     {
+        if (Time.timeScale == 0) return; // todo maybe remove
         Move();
         Rotate();
         HandleRunningAnimation();
@@ -133,7 +134,7 @@ public class PlayerControl : MonoBehaviour
 
     void Rotate()
     {
-        if (direction.x == 0)
+        if (direction.x == 0 || Time.timeScale == 0)
         {
             return;
         }
