@@ -35,7 +35,7 @@ public class PlayerControl : MonoBehaviour
     int trashCount = 0;
 
     float trashBagScale = 1.2f;
-    float playerSpeedScale = 0.75f;
+    float playerSpeedScale = 0.85f;
 
     float playerSlowNearPuddle = 0.5f;
 

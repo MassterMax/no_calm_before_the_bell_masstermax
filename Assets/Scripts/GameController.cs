@@ -7,9 +7,9 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    const int JUNK_REWARD = 1;
-    const int JUNK_PENALTY = -2;
-    const int PUDDLE_PENALTY = -1;
+    const int JUNK_REWARD = 2;
+    const int JUNK_PENALTY = -1;
+    const int PUDDLE_PENALTY = -2;
     const int CHILD_ITEM_PENALTY = -5;
 
     [SerializeField] GameObject warningPrefab;
@@ -116,6 +116,7 @@ public class GameController : MonoBehaviour
         foreach (GameObject puddle in puddleSpawner.GetPuddleList()) {
             // junkSpawner.RemoveJunk(junk);
             SpawnWarning(puddle.transform.position + Vector3.up * 0.5f);
+            ChangeMoney(PUDDLE_PENALTY);
             yield return new WaitForSeconds(delay);
         }
 
