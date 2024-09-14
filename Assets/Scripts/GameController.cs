@@ -8,9 +8,9 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviour
 {
     const int JUNK_REWARD = 1;
-    const int JUNK_PENALTY = -3;
-    const int PUDDLE_PENALTY = -3;
-    const int CHILD_ITEM_PENALTY = -10;
+    const int JUNK_PENALTY = -2;
+    const int PUDDLE_PENALTY = -1;
+    const int CHILD_ITEM_PENALTY = -5;
 
     [SerializeField] GameObject warningPrefab;
     [SerializeField] GameObject pauseScreen;
@@ -24,6 +24,8 @@ public class GameController : MonoBehaviour
 
     List<GameObject> warnings = new List<GameObject>();
 
+    Color originalMoneyColor;
+
     void Start()
     {
         pauseScreen.SetActive(false);
@@ -32,6 +34,8 @@ public class GameController : MonoBehaviour
         ChangeMoney(0);
         puddleSpawner = FindObjectOfType<PuddleSpawner>();
         junkSpawner = FindObjectOfType<JunkSpawner>();
+
+        originalMoneyColor = moneyText.color;
     }
     // Update is called once per frame
     void Update()
@@ -99,10 +103,14 @@ public class GameController : MonoBehaviour
         float delay = (timeToClear / (float)totalItemCount) * 0.4f;
         delay = Math.Min(delay, 0.5f);
 
+        // also penalty for items
+        moneyText.color = Color.red;
+
         // spawn warnings
         foreach (GameObject junk in junkSpawner.GetJunkSet()) {
             // junkSpawner.RemoveJunk(junk);
             SpawnWarning(junk.transform.position + Vector3.up * 0.5f);
+            ChangeMoney(JUNK_PENALTY);
             yield return new WaitForSeconds(delay);
         }
         foreach (GameObject puddle in puddleSpawner.GetPuddleList()) {
@@ -120,6 +128,8 @@ public class GameController : MonoBehaviour
             Destroy(warning);
         }
         warnings.Clear();
+
+        moneyText.color =  originalMoneyColor;
     }
 
 
