@@ -116,7 +116,8 @@ public class PlayerControl : MonoBehaviour
         if (isWashing) { }
         else if (betweenWaves)
         {
-            direction = -transform.position;
+            // todo meybe return 
+            // direction = -transform.position;
         }
         else
         {
@@ -139,10 +140,11 @@ public class PlayerControl : MonoBehaviour
             rb.velocity = (Vector3)direction * playerSpeed;
         }
 
-        if (betweenWaves && transform.position.sqrMagnitude < 0.01)
-        {
-            transform.position = Vector2.zero;
-        }
+        // todo meybe return
+        // if (betweenWaves && transform.position.sqrMagnitude < 0.01)
+        // {
+        //     transform.position = Vector2.zero;
+        // }
     }
 
     void Rotate()
