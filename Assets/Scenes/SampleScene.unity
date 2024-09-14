@@ -2456,6 +2456,51 @@ Transform:
   - {fileID: 2067820737}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1301807440
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1301807442}
+  - component: {fileID: 1301807441}
+  m_Layer: 0
+  m_Name: SoundFXManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1301807441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1301807440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9dfe7deb15efa242b6a656d0072ad27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundFxObject: {fileID: 9204043695320949499, guid: d20894983c97e2244a9594ca915e7c7f, type: 3}
+--- !u!4 &1301807442
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1301807440}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1381579507
 GameObject:
   m_ObjectHideFlags: 0
@@ -5782,6 +5827,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 640d03d74df7fcb499cfc6bbe68bd0a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  getMoneyClip: {fileID: 8300000, guid: d1040ea1d0648fe42ba234adc4379698, type: 3}
+  penaltyClip: {fileID: 8300000, guid: a897e26f2b9b2664c8e78ef9e3c3a49a, type: 3}
   warningPrefab: {fileID: 1312666369574752297, guid: ad82d646bebfd02429ec6dbdebd0784e, type: 3}
   pauseScreen: {fileID: 803173413}
   gameOverScreen: {fileID: 227197587}
@@ -6495,6 +6542,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 823246240881465889, guid: 0f00c3ee2337c0b4198250527e78846c, type: 3}
+      propertyPath: pickupClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 11bd41c83ebd19041b9644511a057127, type: 3}
+    - target: {fileID: 823246240881465889, guid: 0f00c3ee2337c0b4198250527e78846c, type: 3}
+      propertyPath: cleaningClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 6a4e72e3502e635479b2a3b893b5f932, type: 3}
     - target: {fileID: 2463125242590046216, guid: 0f00c3ee2337c0b4198250527e78846c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -6622,3 +6677,4 @@ SceneRoots:
   - {fileID: 546173406}
   - {fileID: 494069316}
   - {fileID: 2005302737}
+  - {fileID: 1301807442}

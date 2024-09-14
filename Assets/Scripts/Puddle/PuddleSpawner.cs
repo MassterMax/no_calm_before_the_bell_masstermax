@@ -9,7 +9,7 @@ public class PuddleSpawner : MonoBehaviour
 
     List<GameObject> puddleList = new List<GameObject>();
 
-    float washingSpeed = 2.5f;
+    public const float WASHING_SPEED = 2.5f;
 
 
     float nearRadius = 0.66f;
@@ -73,7 +73,7 @@ public class PuddleSpawner : MonoBehaviour
 
     IEnumerator StartWashing(int puddleIndex)
     {
-        yield return new WaitForSeconds(washingSpeed);
+        yield return new WaitForSeconds(WASHING_SPEED);
         if (player.GetBetweenWaves())
         {
             // abort

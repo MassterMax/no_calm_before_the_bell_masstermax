@@ -46,6 +46,9 @@ public class PlayerControl : MonoBehaviour
 
     bool betweenWaves = false;
 
+    [SerializeField] AudioClip cleaningClip;
+    [SerializeField] AudioClip pickupClip;
+
     public void SetBetweenWaves(bool value)
     {
         betweenWaves = value;
@@ -189,6 +192,7 @@ public class PlayerControl : MonoBehaviour
                 broom.SetActive(false);
                 isWashing = true;
                 animator.SetBool("isWashing", isWashing);
+                SoundFXManager.instance.PlaySoundFXClip(cleaningClip, transform, 1f, PuddleSpawner.WASHING_SPEED);
             }
         }
         else
@@ -292,6 +296,7 @@ public class PlayerControl : MonoBehaviour
                 collidedJunkSet.Remove(preferedJunk);
                 junkSpawner.RemoveJunk(preferedJunk);
                 IncreaseTrashCount();
+                SoundFXManager.instance.PlaySoundFXClip(pickupClip, transform, 1f);
             }
             else if (nearTrashCan && trashCount > 0)
             {

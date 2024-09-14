@@ -7,6 +7,9 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
+    [SerializeField] AudioClip getMoneyClip;
+    [SerializeField] AudioClip penaltyClip;
+
     const int JUNK_REWARD = 2;
     const int JUNK_PENALTY = -1;
     const int PUDDLE_PENALTY = -2;
@@ -74,7 +77,9 @@ public class GameController : MonoBehaviour
 
     public void RewardForJunk(int count)
     {
+        if (count == 0) return;
         ChangeMoney(count * JUNK_REWARD);
+        SoundFXManager.instance.PlaySoundFXClip(getMoneyClip, transform, 1f);
     }
 
     void ChangeMoney(int value)
@@ -111,12 +116,14 @@ public class GameController : MonoBehaviour
             // junkSpawner.RemoveJunk(junk);
             SpawnWarning(junk.transform.position + Vector3.up * 0.5f);
             ChangeMoney(JUNK_PENALTY);
+            SoundFXManager.instance.PlaySoundFXClip(penaltyClip, junk.transform, 1f);
             yield return new WaitForSeconds(delay);
         }
         foreach (GameObject puddle in puddleSpawner.GetPuddleList()) {
             // junkSpawner.RemoveJunk(junk);
             SpawnWarning(puddle.transform.position + Vector3.up * 0.5f);
             ChangeMoney(PUDDLE_PENALTY);
+            SoundFXManager.instance.PlaySoundFXClip(penaltyClip, puddle.transform, 1f);
             yield return new WaitForSeconds(delay);
         }
 
