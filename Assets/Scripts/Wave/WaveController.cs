@@ -9,9 +9,11 @@ public class WaveController : MonoBehaviour
     const int KIDS_IN_BATCH_CNT = 20;
     const float BETWEEN_KIDS_DELAY = 0.5f;
     const float AFTER_WAVE_DELAY = 5f;
+    const float BEFORE_SPAWN_DELAY = 0f;
+    const int TOTAL_WAVES = 10;
 
     int currentWave = 0;
-    float waveDuration = 15f;
+    float waveDuration = 20f;
     float currentWaveDuration = 0;
     [SerializeField] Slider waveBar;
     [SerializeField] GameObject clock;
@@ -20,13 +22,17 @@ public class WaveController : MonoBehaviour
     Image fill;
     GameController gameController;
     PlayerControl playerControl; 
+    [SerializeField] AudioClip bellClip;
+    [SerializeField] Text currentWaveText;
+
     void Start()
     {
-        StartNewWave();
         kidSpawner = FindObjectOfType<KidSpawner>();
         playerControl = FindObjectOfType<PlayerControl>();
         fill = waveBar.fillRect.gameObject.GetComponent<Image>();
         gameController = FindObjectOfType<GameController>();
+        StartNewWave();
+        gameController.NewWave(currentWave);
     }
 
     // Update is called once per frame
@@ -46,6 +52,7 @@ public class WaveController : MonoBehaviour
         clock.SetActive(true);
         currentWaveDuration = waveDuration;
         currentWave += 1;
+        currentWaveText.text = "  wave: " + currentWave.ToString() + "/" + TOTAL_WAVES.ToString();
     }
 
     void UpdateCurrentWave()
@@ -54,13 +61,14 @@ public class WaveController : MonoBehaviour
         currentWaveDuration = Mathf.Max(0, currentWaveDuration - Time.deltaTime);
         if (currentWaveDuration == 0)
         {
-            // between waves
+            // SPAWN NEW WAVE
             playerControl.SetBetweenWaves(true);
             bell.SetActive(true);
             clock.SetActive(false);
             IEnumerator enumerator = SpawnKids(BETWEEN_KIDS_DELAY, BATCH_CNT, KIDS_IN_BATCH_CNT);
             StartCoroutine(enumerator);
             gameController.ClearAllItems(AFTER_WAVE_DELAY + BETWEEN_KIDS_DELAY * BATCH_CNT);
+            SoundFXManager.instance.PlaySoundFXClip(bellClip, transform, 1f);
         }
         // todo after some time reset bar
         waveBar.value = currentWaveDuration / waveDuration;
@@ -85,8 +93,10 @@ public class WaveController : MonoBehaviour
             yield return new WaitForSeconds(delayTime);
 
         }
-        yield return new WaitForSeconds(AFTER_WAVE_DELAY);
-        playerControl.SetBetweenWaves(false);
+        yield return new WaitForSeconds(BEFORE_SPAWN_DELAY);
+        gameController.NewWave(currentWave + 1);
+        yield return new WaitForSeconds(AFTER_WAVE_DELAY - BEFORE_SPAWN_DELAY);
         StartNewWave();
+        playerControl.SetBetweenWaves(false);
     }
 }

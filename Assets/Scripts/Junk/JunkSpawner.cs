@@ -15,25 +15,24 @@ public class JunkSpawner : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            SpawnJunk();
-        }
     }
 
-    public void SpawnJunk()
+    public void SpawnJunk(int cnt)
     {
-        // -8 ... 8, -2 ... 2
-        Vector2 pos = Vector2.right * Random.Range(-8f, 8f) + Vector2.up * Random.Range(-3.5f, 2f);
-        GameObject junk = Instantiate(junkPrefab, pos, Quaternion.identity);
-        int i = 0;
-        int activated = UnityEngine.Random.Range(0, 3);
-        foreach (Transform child in junk.GetComponentInChildren<Transform>())
+        for (int j = 0; j < cnt; ++j)
         {
-            child.gameObject.SetActive(i == activated);
-            i += 1;
+            // -8 ... 8, -2 ... 2
+            Vector2 pos = Vector2.right * Random.Range(-8f, 8f) + Vector2.up * Random.Range(-3.5f, 2f);
+            GameObject junk = Instantiate(junkPrefab, pos, Quaternion.identity);
+            int i = 0;
+            int activated = UnityEngine.Random.Range(0, 3);
+            foreach (Transform child in junk.GetComponentInChildren<Transform>())
+            {
+                child.gameObject.SetActive(i == activated);
+                i += 1;
+            }
+            junkSet.Add(junk);
         }
-        junkSet.Add(junk);
     }
 
     public void RemoveJunk(GameObject junk)
@@ -47,8 +46,10 @@ public class JunkSpawner : MonoBehaviour
         return junkSet;
     }
 
-    public void ClearAllJunk() {
-        foreach (GameObject junk in junkSet) {
+    public void ClearAllJunk()
+    {
+        foreach (GameObject junk in junkSet)
+        {
             Destroy(junk);
         }
         junkSet.Clear();

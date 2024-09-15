@@ -146,4 +146,25 @@ public class GameController : MonoBehaviour
         GameObject warning = Instantiate(warningPrefab, pos, Quaternion.identity);
         warnings.Add(warning);
     }
+
+    public void NewWave(int wave) {
+        int junkCnt = 1;
+        int puddleCnt = 1;
+
+        if (wave == 1) {
+            IEnumerator coroutine = WaitForInitAndSpawn();
+            StartCoroutine(coroutine);
+        } else {
+        puddleSpawner.SpawnPuddle(puddleCnt);
+        junkSpawner.SpawnJunk(junkCnt);
+        }
+    }
+
+    IEnumerator WaitForInitAndSpawn()
+    {
+        while (puddleSpawner == null && junkSpawner == null) {
+            yield return new WaitForSeconds(0.1f);
+        }
+        junkSpawner.SpawnJunk(3);
+    }
 }

@@ -28,18 +28,15 @@ public class PuddleSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // todo remove
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            SpawnPuddle();
-        }
     }
 
-    public void SpawnPuddle()
+    public void SpawnPuddle(int cnt)
     {
-        Vector2 pos = Vector2.right * UnityEngine.Random.Range(-8f, 8f) + Vector2.up * UnityEngine.Random.Range(-3.5f, 2f);
-        GameObject newPuddle = Instantiate(puddlePrefab, pos, Quaternion.identity);
-        puddleList.Add(newPuddle);
+        for (int i = 0; i < cnt; ++i) {
+            Vector2 pos = Vector2.right * UnityEngine.Random.Range(-8f, 8f) + Vector2.up * UnityEngine.Random.Range(-3.5f, 2f);
+            GameObject newPuddle = Instantiate(puddlePrefab, pos, Quaternion.identity);
+            puddleList.Add(newPuddle);
+        }
     }
 
 
