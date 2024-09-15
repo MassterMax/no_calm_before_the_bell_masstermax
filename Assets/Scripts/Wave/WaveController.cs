@@ -10,7 +10,7 @@ public class WaveController : MonoBehaviour
     const float BETWEEN_KIDS_DELAY = 0.5f;
     const float AFTER_WAVE_DELAY = 5f;
     const float BEFORE_SPAWN_DELAY = 0f;
-    public const int TOTAL_WAVES = 2;
+    public const int TOTAL_WAVES = 10;
     const float CLEAN_FLOOR_BOOST = 10f;
 
     int currentWave = 0;
