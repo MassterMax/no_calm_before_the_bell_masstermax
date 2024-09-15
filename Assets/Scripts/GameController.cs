@@ -31,6 +31,7 @@ public class GameController : MonoBehaviour
     Color originalMoneyColor;
 
     [SerializeField] AudioSource backMusic;
+    [SerializeField] GameObject winPane;
 
     void Start()
     {
@@ -170,6 +171,9 @@ public class GameController : MonoBehaviour
 
     public void NewWave(int wave)
     {
+        if (wave == WaveController.TOTAL_WAVES + 1) {
+            return;
+        }
         if (wave == 1)
         {
             IEnumerator coroutine = WaitForInitAndSpawn();
@@ -189,9 +193,10 @@ public class GameController : MonoBehaviour
             junkSpawner.SpawnJunk(wave + 5);
             puddleSpawner.SpawnPuddle(wave);
         }
-        else
+        else if (wave == 10)
         {
-
+            junkSpawner.SpawnJunk(wave + 10);
+            puddleSpawner.SpawnPuddle(wave + 5);
         }
         // int junkCnt = 1;
         // int puddleCnt = 1;
@@ -211,5 +216,23 @@ public class GameController : MonoBehaviour
     public bool FloorIsClean()
     {
         return puddleSpawner.GetPuddleList().Count + junkSpawner.GetJunkSet().Count == 0;
+    }
+
+    public void EndGame() {
+        backMusic.Stop();
+        // todo other staff
+        // spawn kiddo
+        // when kiddo on end - spawn pane
+        StartCoroutine(Win());
+    }
+
+    IEnumerator Win()
+    {
+        GameObject kid = FindObjectOfType<KidSpawner>().SpawnWinKid();
+        while (kid.transform.position.x < 0) {
+            yield return new WaitForSeconds(0.2f);
+        }
+        winPane.SetActive(true);
+        // kid.GetComponent<Animator>().speed = 0;
     }
 }

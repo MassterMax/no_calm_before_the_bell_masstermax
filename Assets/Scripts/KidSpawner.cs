@@ -23,4 +23,12 @@ public class KidSpawner : MonoBehaviour
             Instantiate(kidPrefab, position, Quaternion.identity);
         }
     }
+
+    public GameObject SpawnWinKid()
+    {
+        Vector2 position = Vector2.left * 10;
+        GameObject kid = Instantiate(kidPrefab, position, Quaternion.identity);
+        kid.GetComponent<Kid>().SetWin();
+        return kid;
+    }
 }

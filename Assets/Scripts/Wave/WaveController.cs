@@ -10,7 +10,7 @@ public class WaveController : MonoBehaviour
     const float BETWEEN_KIDS_DELAY = 0.5f;
     const float AFTER_WAVE_DELAY = 5f;
     const float BEFORE_SPAWN_DELAY = 0f;
-    const int TOTAL_WAVES = 10;
+    public const int TOTAL_WAVES = 2;
     const float CLEAN_FLOOR_BOOST = 10f;
 
     int currentWave = 0;
@@ -25,6 +25,8 @@ public class WaveController : MonoBehaviour
     PlayerControl playerControl;
     [SerializeField] AudioClip bellClip;
     [SerializeField] Text currentWaveText;
+    [SerializeField] AudioClip winClip;
+    bool ended = false;
 
     void Start()
     {
@@ -39,7 +41,8 @@ public class WaveController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UpdateCurrentWave();
+        if (!ended)
+            UpdateCurrentWave();
 
         // if (Input.GetKeyDown(KeyCode.R))
         // {
@@ -53,7 +56,16 @@ public class WaveController : MonoBehaviour
         clock.SetActive(true);
         currentWaveDuration = waveDuration;
         currentWave += 1;
-        currentWaveText.text = "  lesson: " + currentWave.ToString() + "/" + TOTAL_WAVES.ToString();
+        // currentWaveText.text = "  lesson: " + currentWave.ToString() + "/" + TOTAL_WAVES.ToString();
+
+        if (currentWave == TOTAL_WAVES + 1) {
+            currentWaveText.text = "  lessons are over!";
+            ended = true;
+            SoundFXManager.instance.PlaySoundFXClip(winClip, transform, 0.15f);
+            gameController.EndGame();
+        } else {
+            currentWaveText.text = "  lesson: " + currentWave.ToString() + "/" + TOTAL_WAVES.ToString();
+        }
     }
 
     void UpdateCurrentWave()

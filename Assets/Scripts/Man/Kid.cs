@@ -11,6 +11,7 @@ public class Kid : MonoBehaviour
     Rigidbody2D rb;
 
     float speed = 5f;
+    bool win = false;
     void Start()
     {
         int i;
@@ -48,8 +49,18 @@ public class Kid : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (win) {
+            if (0 <= transform.position.x) {
+                rb.velocity = Vector2.zero;
+            }
+            return;
+        }
         if (transform.position.x > 10) {
             Destroy(gameObject);  // destroy kid
         }
+    }
+
+    public void SetWin() {
+        win = true;
     }
 }
