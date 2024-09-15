@@ -11,9 +11,10 @@ public class WaveController : MonoBehaviour
     const float AFTER_WAVE_DELAY = 5f;
     const float BEFORE_SPAWN_DELAY = 0f;
     const int TOTAL_WAVES = 10;
+    const float CLEAN_FLOOR_BOOST = 10f;
 
     int currentWave = 0;
-    float waveDuration = 20f;
+    float waveDuration = 30f; // 30f;
     float currentWaveDuration = 0;
     [SerializeField] Slider waveBar;
     [SerializeField] GameObject clock;
@@ -21,7 +22,7 @@ public class WaveController : MonoBehaviour
     KidSpawner kidSpawner;
     Image fill;
     GameController gameController;
-    PlayerControl playerControl; 
+    PlayerControl playerControl;
     [SerializeField] AudioClip bellClip;
     [SerializeField] Text currentWaveText;
 
@@ -52,13 +53,20 @@ public class WaveController : MonoBehaviour
         clock.SetActive(true);
         currentWaveDuration = waveDuration;
         currentWave += 1;
-        currentWaveText.text = "  wave: " + currentWave.ToString() + "/" + TOTAL_WAVES.ToString();
+        currentWaveText.text = "  lesson: " + currentWave.ToString() + "/" + TOTAL_WAVES.ToString();
     }
 
     void UpdateCurrentWave()
     {
         if (currentWaveDuration == 0) return;
-        currentWaveDuration = Mathf.Max(0, currentWaveDuration - Time.deltaTime);
+        if (playerControl.GetTrashCount() == 0 && gameController.FloorIsClean())
+        {
+            currentWaveDuration = Mathf.Max(0, currentWaveDuration - Time.deltaTime * CLEAN_FLOOR_BOOST);
+        }
+        else
+        {
+            currentWaveDuration = Mathf.Max(0, currentWaveDuration - Time.deltaTime);
+        }
         if (currentWaveDuration == 0)
         {
             // SPAWN NEW WAVE
@@ -68,19 +76,25 @@ public class WaveController : MonoBehaviour
             IEnumerator enumerator = SpawnKids(BETWEEN_KIDS_DELAY, BATCH_CNT, KIDS_IN_BATCH_CNT);
             StartCoroutine(enumerator);
             gameController.ClearAllItems(AFTER_WAVE_DELAY + BETWEEN_KIDS_DELAY * BATCH_CNT);
-            SoundFXManager.instance.PlaySoundFXClip(bellClip, transform, 1f);
+            SoundFXManager.instance.PlaySoundFXClip(bellClip, transform, 0.66f);
         }
         // todo after some time reset bar
         waveBar.value = currentWaveDuration / waveDuration;
         HandleWaveBarColor();
     }
 
-    void HandleWaveBarColor() {
-        if (waveBar.value >= 0.5) {
+    void HandleWaveBarColor()
+    {
+        if (waveBar.value >= 0.5)
+        {
             fill.color = Color.white;
-        } else if (waveBar.value >= 0.2) {
+        }
+        else if (waveBar.value >= 0.2)
+        {
             fill.color = Color.yellow;
-        } else {
+        }
+        else
+        {
             fill.color = Color.red;
         }
     }

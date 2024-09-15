@@ -270,9 +270,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 33688e04584f45a4da8f368d6692b0c7, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 19a0a8a9f06a32249a0e3e2903f53424, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.5
+  m_Volume: 0.15
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -820,7 +820,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 600, y: 100}
+  m_SizeDelta: {x: 600, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &471339151
 MonoBehaviour:
@@ -857,7 +857,10 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'GAME OVER
 
-    press R to restart'
+
+    press R to restart
+
+    press M to menu'
 --- !u!222 &471339152
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1276,7 +1279,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 600, y: 100}
+  m_SizeDelta: {x: 600, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &566382322
 MonoBehaviour:
@@ -1313,7 +1316,10 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'PAUSED
 
-    press P to continue'
+
+    press P to continue
+
+    press m to menu'
 --- !u!222 &566382323
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1700,7 +1706,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &803173414
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1905,7 +1911,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '  wave: 0/20'
+  m_Text: '  lesson: 0/10'
 --- !u!222 &986552083
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5739,6 +5745,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'GAME OVER
 
+
     press R to restart'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -6105,10 +6112,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   getMoneyClip: {fileID: 8300000, guid: d1040ea1d0648fe42ba234adc4379698, type: 3}
   penaltyClip: {fileID: 8300000, guid: a897e26f2b9b2664c8e78ef9e3c3a49a, type: 3}
+  gameOverClip: {fileID: 8300000, guid: 52d1306945fd2db40b0d7439e7c1a0fd, type: 3}
   warningPrefab: {fileID: 1312666369574752297, guid: ad82d646bebfd02429ec6dbdebd0784e, type: 3}
   pauseScreen: {fileID: 803173413}
   gameOverScreen: {fileID: 227197587}
   moneyText: {fileID: 2070796687}
+  backMusic: {fileID: 187564367}
 --- !u!1 &2062704440
 GameObject:
   m_ObjectHideFlags: 0

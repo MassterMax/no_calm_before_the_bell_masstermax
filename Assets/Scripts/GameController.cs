@@ -9,10 +9,11 @@ public class GameController : MonoBehaviour
 {
     [SerializeField] AudioClip getMoneyClip;
     [SerializeField] AudioClip penaltyClip;
+    [SerializeField] AudioClip gameOverClip;
 
-    const int JUNK_REWARD = 2;
-    const int JUNK_PENALTY = -1;
-    const int PUDDLE_PENALTY = -2;
+    const int JUNK_REWARD = 1;
+    const int JUNK_PENALTY = -2;
+    const int PUDDLE_PENALTY = -4;
     const int CHILD_ITEM_PENALTY = -5;
 
     [SerializeField] GameObject warningPrefab;
@@ -28,6 +29,8 @@ public class GameController : MonoBehaviour
     List<GameObject> warnings = new List<GameObject>();
 
     Color originalMoneyColor;
+
+    [SerializeField] AudioSource backMusic;
 
     void Start()
     {
@@ -49,8 +52,19 @@ public class GameController : MonoBehaviour
             {
                 SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
             }
+            else if (Input.GetKeyDown(KeyCode.M))
+            {
+                SceneManager.LoadScene("StartScene", LoadSceneMode.Single);
+            }
             return;
         }
+
+        if (paused && Input.GetKeyDown(KeyCode.M))
+        {
+            SceneManager.LoadScene("StartScene", LoadSceneMode.Single);
+        }
+
+
         if (Input.GetKeyDown(KeyCode.P))
         {
             Pause();
@@ -73,6 +87,8 @@ public class GameController : MonoBehaviour
         gameOverScreen.SetActive(true);
         gameOver = true;
         Time.timeScale = 0;
+        backMusic.Stop();
+        SoundFXManager.instance.PlaySoundFXClip(gameOverClip, transform, 0.15f);
     }
 
     public void RewardForJunk(int count)
@@ -94,7 +110,8 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void ClearAllItems(float timeToClear) {
+    public void ClearAllItems(float timeToClear)
+    {
         IEnumerator coroutine = IterateAllItems(timeToClear);
         StartCoroutine(coroutine);
     }
@@ -102,7 +119,8 @@ public class GameController : MonoBehaviour
     IEnumerator IterateAllItems(float timeToClear)
     {
         int totalItemCount = junkSpawner.GetJunkSet().Count + puddleSpawner.GetPuddleList().Count;
-        if (totalItemCount == 0) {
+        if (totalItemCount == 0)
+        {
             yield break;
         }
         float delay = (timeToClear / (float)totalItemCount) * 0.4f;
@@ -112,14 +130,16 @@ public class GameController : MonoBehaviour
         moneyText.color = Color.red;
 
         // spawn warnings
-        foreach (GameObject junk in junkSpawner.GetJunkSet()) {
+        foreach (GameObject junk in junkSpawner.GetJunkSet())
+        {
             // junkSpawner.RemoveJunk(junk);
             SpawnWarning(junk.transform.position + Vector3.up * 0.5f);
             ChangeMoney(JUNK_PENALTY);
             SoundFXManager.instance.PlaySoundFXClip(penaltyClip, junk.transform, 1f);
             yield return new WaitForSeconds(delay);
         }
-        foreach (GameObject puddle in puddleSpawner.GetPuddleList()) {
+        foreach (GameObject puddle in puddleSpawner.GetPuddleList())
+        {
             // junkSpawner.RemoveJunk(junk);
             SpawnWarning(puddle.transform.position + Vector3.up * 0.5f);
             ChangeMoney(PUDDLE_PENALTY);
@@ -132,12 +152,13 @@ public class GameController : MonoBehaviour
         puddleSpawner.ClearAllPuddles();
 
         // remove warnings
-        foreach (GameObject warning in warnings) {
+        foreach (GameObject warning in warnings)
+        {
             Destroy(warning);
         }
         warnings.Clear();
 
-        moneyText.color =  originalMoneyColor;
+        moneyText.color = originalMoneyColor;
     }
 
 
@@ -147,24 +168,48 @@ public class GameController : MonoBehaviour
         warnings.Add(warning);
     }
 
-    public void NewWave(int wave) {
-        int junkCnt = 1;
-        int puddleCnt = 1;
-
-        if (wave == 1) {
+    public void NewWave(int wave)
+    {
+        if (wave == 1)
+        {
             IEnumerator coroutine = WaitForInitAndSpawn();
             StartCoroutine(coroutine);
-        } else {
-        puddleSpawner.SpawnPuddle(puddleCnt);
-        junkSpawner.SpawnJunk(junkCnt);
         }
+        else if (wave < 4)
+        {
+            junkSpawner.SpawnJunk(wave * 3);
+        }
+        else if (wave < 7)
+        {
+            junkSpawner.SpawnJunk((wave - 3) * 5);
+            puddleSpawner.SpawnPuddle((int)(Mathf.Pow(2, (wave - 4)) + 0.01f));
+        }
+        else if (wave < 10)
+        {
+            junkSpawner.SpawnJunk(wave + 5);
+            puddleSpawner.SpawnPuddle(wave);
+        }
+        else
+        {
+
+        }
+        // int junkCnt = 1;
+        // int puddleCnt = 1;
+        // puddleSpawner.SpawnPuddle(puddleCnt);
+        // junkSpawner.SpawnJunk(junkCnt);
     }
 
     IEnumerator WaitForInitAndSpawn()
     {
-        while (puddleSpawner == null && junkSpawner == null) {
+        while (puddleSpawner == null && junkSpawner == null)
+        {
             yield return new WaitForSeconds(0.1f);
         }
         junkSpawner.SpawnJunk(3);
+    }
+
+    public bool FloorIsClean()
+    {
+        return puddleSpawner.GetPuddleList().Count + junkSpawner.GetJunkSet().Count == 0;
     }
 }

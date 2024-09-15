@@ -215,11 +215,6 @@ public class PlayerControl : MonoBehaviour
         Debug.Log("Enter " + collider.gameObject.tag);
         if (collider.gameObject.tag == "junk")
         {
-            // if (collidedJunk.ContainsKey(collider.transform.position))
-            // {
-            //     throw new System.Exception();
-            // }
-            // collidedJunk.Add(collider.transform.position, collider);
             collidedJunkSet.Add(collider.gameObject);
         }
         else if (collider.gameObject.tag == "trash-can")
@@ -233,7 +228,6 @@ public class PlayerControl : MonoBehaviour
         Debug.Log("Exit " + collider.gameObject.tag);
         if (collider.gameObject.tag == "junk")
         {
-            // collidedJunk.Remove(collider.transform.position);
             collidedJunkSet.Remove(collider.gameObject);
         }
         else if (collider.gameObject.tag == "trash-can")
@@ -242,38 +236,7 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-    // void HandleJunk()
-    // {
-    //     if (isWashing || betweenWaves) return;
-    //     if (Input.GetKeyDown(KeyCode.Space))
-    //     {
-    //         if (collidedJunk.Count > 0)
-    //         {
-    //             Debug.Log("inside HandleJunk: try to destory first junk");
-    //             float distance = -1;
-    //             Vector3 preferedJunk = Vector3.zero;
 
-    //             foreach (GameObject pos in collidedJunk.Keys)
-    //             {
-    //                 if (distance == -1 || distance > (pos - transform.position).sqrMagnitude)
-    //                 {
-    //                     distance = (pos - transform.position).sqrMagnitude;
-    //                     preferedJunk = pos;
-    //                 }
-    //             }
-
-    //             GameObject junk = collidedJunk[preferedJunk].gameObject;
-    //             collidedJunk.Remove(preferedJunk);
-    //             junkSpawner.RemoveJunk(junk);
-    //             IncreaseTrashCount();
-    //         }
-    //         else if (nearTrashCan && trashCount > 0)
-    //         {
-    //             Debug.Log("inside HandleJunk: try to drop junk to can");
-    //             ClearTrashCount();
-    //         }
-    //     }
-    // }
     void HandleJunk()
     {
         if (isWashing || betweenWaves) return;
@@ -321,5 +284,9 @@ public class PlayerControl : MonoBehaviour
         trashBag.transform.localScale = Vector3.one;
         playerSpeed = PLAYER_SPEED;
         trashBag.SetActive(false);
+    }
+
+    public int GetTrashCount() {
+        return trashCount;
     }
 }
