@@ -22,7 +22,7 @@ public class JunkSpawner : MonoBehaviour
         for (int j = 0; j < cnt; ++j)
         {
             // -8 ... 8, -2 ... 2
-            Vector2 pos = Vector2.right * Random.Range(-7.5f,7.5f) + Vector2.up * Random.Range(-3.5f, 2f);
+            Vector2 pos = Vector2.right * Random.Range(-6f,6f) + Vector2.up * Random.Range(-3.5f, 2f);
             GameObject junk = Instantiate(junkPrefab, pos, Quaternion.identity);
             int i = 0;
             int activated = UnityEngine.Random.Range(0, 3);

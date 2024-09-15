@@ -33,7 +33,7 @@ public class PuddleSpawner : MonoBehaviour
     public void SpawnPuddle(int cnt)
     {
         for (int i = 0; i < cnt; ++i) {
-            Vector2 pos = Vector2.right * UnityEngine.Random.Range(-7.5f,7.5f) + Vector2.up * UnityEngine.Random.Range(-3.5f, 2f);
+            Vector2 pos = Vector2.right * UnityEngine.Random.Range(-6f,6f) + Vector2.up * UnityEngine.Random.Range(-3.5f, 2f);
             GameObject newPuddle = Instantiate(puddlePrefab, pos, Quaternion.identity);
             puddleList.Add(newPuddle);
         }
