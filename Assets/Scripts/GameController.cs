@@ -190,13 +190,13 @@ public class GameController : MonoBehaviour
         }
         else if (wave < 10)
         {
-            junkSpawner.SpawnJunk(wave + 5);
+            junkSpawner.SpawnJunk(wave + 4);
             puddleSpawner.SpawnPuddle(wave);
         }
         else if (wave == 10)
         {
-            junkSpawner.SpawnJunk(wave + 10);
-            puddleSpawner.SpawnPuddle(wave + 5);
+            junkSpawner.SpawnJunk(wave + 5);
+            puddleSpawner.SpawnPuddle(wave + 1);
         }
         // int junkCnt = 1;
         // int puddleCnt = 1;
